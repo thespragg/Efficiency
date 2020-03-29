@@ -1,34 +1,12 @@
 <template>
   <div id="app">
-    <div v-if="['login', 'register'].indexOf($route.name) > -1">
-      <div v-if="$mq == 'lg'">
-        <Sidebar v-on:visible="reset()" v-on:sidebar-toggled="SidebarToggled()" />
-        <DetailBar :class="changeWidth" class="shadow" />
-      </div>
-      <div v-if="$mq == 'sm'">
-        <MobileMenu class="shadow" />
-      </div>
-      <RouterView class="main-container" :class="$mq == 'lg' ? changeWidth : ''"></RouterView>
-    </div>
-    <!-- Used for loading login/registration pages -->
-    <div v-else>
       <RouterView></RouterView>
-    </div>
   </div>
 </template>
 
 <script>
-import Sidebar from "@/components/Sidebar";
-import DetailBar from "@/components/DetailBar";
-import MobileMenu from "@/components/MobileMenu";
-
 export default {
   name: "App",
-  components: {
-    Sidebar,
-    DetailBar,
-    MobileMenu
-  },
   data() {
     return {
       sidebarPinned: false,

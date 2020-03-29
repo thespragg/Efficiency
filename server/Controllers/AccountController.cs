@@ -34,7 +34,7 @@ namespace server.Controllers
                 return "";
             }
 
-            if(VerifyHash(user.Password,storedUser.Salt, storedUser.Hash))
+            if(VerifyHash(user.Password, storedUser.Hash))
             {
                 var jwt = new JwtProvider(_config);
                 var token = jwt.GenerateSecurityToken(user.Username);
@@ -46,15 +46,12 @@ namespace server.Controllers
         [HttpPost("Register")]
         public bool Register(NewUser user)
         {
-            //TODO: Error handling
-            var salt = CreateSalt();
-            var hash = HashPassword(user.Password, salt);
+            var hash = HashPassword(user.Password);
 
             //Check email isnt taken
             var newUser = new User()
             {
                 Username = user.Email,
-                Salt = salt,
                 Hash = hash,
                 Created = DateTime.Now,
                 Name = user.Name,
@@ -64,31 +61,14 @@ namespace server.Controllers
             return true;
         }
 
-        private byte[] CreateSalt()
+        private string HashPassword(string password)
         {
-            var buffer = new byte[16];
-            var rng = new RNGCryptoServiceProvider();
-            rng.GetBytes(buffer);
-            return buffer;
+            return PasswordHasher.Hash(password, 4);
         }
 
-        private byte[] HashPassword(string password, byte[] salt)
+        private bool VerifyHash(string password, string hash)
         {
-            var argon2 = new Argon2id(Encoding.UTF8.GetBytes(password))
-            {
-                Salt = salt,
-                DegreeOfParallelism = 8,
-                Iterations = 4,
-                MemorySize = 1024 * 1024
-            };
-
-            return argon2.GetBytes(16);
-        }
-
-        private bool VerifyHash(string password, byte[] salt, byte[] hash)
-        {
-            var newHash = HashPassword(password, salt);
-            return hash.SequenceEqual(newHash);
+            return PasswordHasher.Verify(password, hash);
         }
     }
 }

@@ -19,7 +19,7 @@ router.beforeEach((to, from, next) => {
     return next('/login');
   }
   
-  if (user) {
+  if (user && authRequired) {
     let token = jwt.decode(user);
     if(Date.now() > token.exp * 1000){
       return next('/login')

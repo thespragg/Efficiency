@@ -5,7 +5,7 @@ Vue.use(Vuex);
 
 export const store = new Vuex.Store({
   state: {
-    api: "https://localhost:5001/api"
+    api: "https://localhost:44301/api"
   },
   mutations: {
 

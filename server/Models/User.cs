@@ -13,10 +13,7 @@ namespace server.Models
         public string Username { get; set; }
 
         [BsonElement("Hash")]
-        public byte[] Hash { get; set; }
-
-        [BsonElement("Salt")]
-        public byte[] Salt { get; set; }
+        public string Hash { get; set; }
 
         [BsonElement("LastLoggedIn")]
         public BsonDateTime LastLoggedIn { get; set; }

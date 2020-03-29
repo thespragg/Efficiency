@@ -4,7 +4,7 @@
       <codemirror class="editor" v-model="code" :options="cmOptions"></codemirror>
       <div class="options">
         <input class="text-input" type="text" placeholder="Times to run" />
-        <button class="btn">Run!</button>
+        <button @click="runCode" class="btn">Run!</button>
       </div>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -26,7 +26,7 @@ import "codemirror/mode/clike/clike";
 export default {
   data() {
     return {
-      code: "using System;\n\npublic class Test{\n\t//Write your code here\n}",
+      code: "using System;\n\nnamespace CodeEnv{\n\tpublic class Test{\n\t\tpublic void Run(){\n\t\t//Write your code here\n\t\t}\n\t}\n}",
       cmOptions: {
         tabSize: 4,
         mode: "text/x-csharp",
@@ -40,15 +40,13 @@ export default {
     codemirror
   },
   methods: {
-    onCmReady(cm) {
-      console.log("the editor is readied!", cm);
-    },
-    onCmFocus(cm) {
-      console.log("the editor is focused!", cm);
-    },
-    onCmCodeChange(newCode) {
-      console.log("this is new code", newCode);
-      this.code = newCode;
+    runCode(){
+      let stripped = JSON.stringify(this.code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,''));
+      stripped = stripped.replace(/\\n|\\t|\\r/gm, '');
+      let api = this.$store.getters.api + "/Code";
+      this.$http.post(api, {code: stripped}).then(res=>{
+        console.log(res);
+      })
     }
   },
   computed: {

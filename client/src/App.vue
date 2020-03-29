@@ -9,23 +9,8 @@ export default {
   name: "App",
   data() {
     return {
-      sidebarPinned: false,
-      size: this.$mq
     };
   },
-  computed: {
-    changeWidth() {
-      return this.sidebarPinned ? "pinned-sidebar" : "unpinned-sidebar";
-    }
-  },
-  methods: {
-    SidebarToggled() {
-      this.sidebarPinned = !this.sidebarPinned;
-    },
-    reset() {
-      this.sidebarPinned = false;
-    }
-  }
 };
 </script>
 
@@ -108,5 +93,10 @@ table {
 
 .main-container {
   padding: 10px;
+}
+
+.cm-s-nord{
+border-radius: 16px;
+padding:10px;
 }
 </style>

@@ -6,7 +6,9 @@
         <input class="text-input" type="text" placeholder="Times to run" />
         <button @click="runCode" class="btn">Run!</button>
       </div>
-      <div class="errors" v-if="errors.length > 0"></div>
+      <div class="errors" v-if="errors && errors.length > 0">
+        <div v-for="error in errors" :key="error" class="error">{{error}}</div>
+      </div>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
       <path
@@ -50,8 +52,28 @@ export default {
       stripped = stripped.replace(/\\n|\\t|\\r/gm, "");
       let api = this.$store.getters.api + "/Code";
       this.$http.post(api, { code: stripped }).then(res => {
+        let data = res.data;
+        if (data.errors) {
+          for (let i = 0; i < data.errors.length; i++) {
+            let closing = data.errors[i].indexOf(")") + 1
+            let lineStart = data.errors[i].indexOf(',')+1
+            let sub = data.errors[i].substring(lineStart, closing-1);
+            data.errors[i] = this.getLine(sub) + data.errors[i].substring(closing)
+          }
+        }
+        this.errors = data.errors;
         console.log(res);
       });
+    },
+    getLine(index) {
+      let codeLines = this.code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, "").split("\n");
+      var tot = 0;
+      for (let i = 0; i < codeLines.length; i++) {
+        tot += codeLines[i].length;
+        if (tot >= index) {
+          return "(1, "+(i + 1) + ")";
+        }
+      }
     }
   },
   computed: {
@@ -69,7 +91,7 @@ export default {
 
 .upper-section {
   background-color: #0099ff;
-  height: 400px;
+  height: auto;
   padding: 50px 5px;
 }
 
@@ -85,9 +107,15 @@ export default {
   justify-content: space-between;
 }
 
+.errors {
+  background-color: #2e3440;
+  width: 68%;
+  margin: 0 auto;
+  padding: 10px;
+}
 .error {
-  width: 70%;
-  margin: 10px auto;
+  color: #bf616a;
+  margin: 3px;
 }
 
 .btn {

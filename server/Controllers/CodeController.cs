@@ -20,6 +20,7 @@ namespace server.Controllers
         [HttpPost]
         public CompilerResponse Post(UserCode userCode)
         {
+            userCode.Code = userCode.Code.Substring(1, userCode.Code.Length - 2);
             return Compile(userCode.Code);
         }
 

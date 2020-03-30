@@ -6,6 +6,7 @@
         <input class="text-input" type="text" placeholder="Times to run" />
         <button @click="runCode" class="btn">Run!</button>
       </div>
+      <div class="errors" v-if="errors.length > 0"></div>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
       <path
@@ -26,27 +27,31 @@ import "codemirror/mode/clike/clike";
 export default {
   data() {
     return {
-      code: "using System;\n\nnamespace CodeEnv{\n\tpublic class Test{\n\t\tpublic void Run(){\n\t\t//Write your code here\n\t\t}\n\t}\n}",
+      code:
+        "using System;\n\nnamespace CodeEnv{\n\tpublic class Test{\n\t\tpublic void Run(){\n\t\t//Write your code here\n\t\t}\n\t}\n}",
       cmOptions: {
         tabSize: 4,
         mode: "text/x-csharp",
         theme: "nord",
         lineNumbers: true,
         line: true
-      }
+      },
+      errors: []
     };
   },
   components: {
     codemirror
   },
   methods: {
-    runCode(){
-      let stripped = JSON.stringify(this.code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g,''));
-      stripped = stripped.replace(/\\n|\\t|\\r/gm, '');
+    runCode() {
+      let stripped = JSON.stringify(
+        this.code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, "")
+      );
+      stripped = stripped.replace(/\\n|\\t|\\r/gm, "");
       let api = this.$store.getters.api + "/Code";
-      this.$http.post(api, {code: stripped}).then(res=>{
+      this.$http.post(api, { code: stripped }).then(res => {
         console.log(res);
-      })
+      });
     }
   },
   computed: {
@@ -78,6 +83,11 @@ export default {
   margin: 10px auto;
   display: flex;
   justify-content: space-between;
+}
+
+.error {
+  width: 70%;
+  margin: 10px auto;
 }
 
 .btn {

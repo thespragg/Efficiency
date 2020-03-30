@@ -9,6 +9,7 @@ using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
 using Microsoft.CodeAnalysis.Emit;
 using Microsoft.CSharp;
+using server.Helpers;
 using server.Models;
 
 namespace server.Controllers
@@ -62,12 +63,14 @@ namespace server.Controllers
                 {
                     ms.Seek(0, SeekOrigin.Begin);
 
-                    Assembly assembly = AssemblyLoadContext.Default.LoadFromStream(ms);
+                    var loader = new CustomAssemblyLoadContext();
+                    Assembly assembly = loader.LoadFromStream(ms);
                     var type = assembly.GetType("CodeEnv.Test");
                     var instance = assembly.CreateInstance("CodeEnv.Test");
                     var meth = type.GetMember("Run").First() as MethodInfo;
                     meth.Invoke(instance, null);
-
+                    assembly = null;
+                    loader.Unload();
                     return new CompilerResponse()
                     {
                         Status = "Success"

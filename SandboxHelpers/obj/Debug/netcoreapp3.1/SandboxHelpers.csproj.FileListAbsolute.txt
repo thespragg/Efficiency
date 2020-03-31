@@ -5,3 +5,10 @@ C:\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.Ass
 C:\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.AssemblyInfo.cs
 C:\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.dll
 C:\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.pdb
+D:\TechWolf\Projects\Efficiency\SandboxHelpers\bin\Debug\netcoreapp3.1\SandboxHelpers.deps.json
+D:\TechWolf\Projects\Efficiency\SandboxHelpers\bin\Debug\netcoreapp3.1\SandboxHelpers.dll
+D:\TechWolf\Projects\Efficiency\SandboxHelpers\bin\Debug\netcoreapp3.1\SandboxHelpers.pdb
+D:\TechWolf\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.AssemblyInfoInputs.cache
+D:\TechWolf\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.AssemblyInfo.cs
+D:\TechWolf\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.dll
+D:\TechWolf\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.pdb

@@ -1,24 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Projects\\Efficiency\\SandboxHelpers\\SandboxHelpers.csproj": {}
+    "D:\\TechWolf\\Projects\\Efficiency\\SandboxHelpers\\SandboxHelpers.csproj": {}
   },
   "projects": {
-    "C:\\Projects\\Efficiency\\SandboxHelpers\\SandboxHelpers.csproj": {
+    "D:\\TechWolf\\Projects\\Efficiency\\SandboxHelpers\\SandboxHelpers.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Projects\\Efficiency\\SandboxHelpers\\SandboxHelpers.csproj",
+        "projectUniqueName": "D:\\TechWolf\\Projects\\Efficiency\\SandboxHelpers\\SandboxHelpers.csproj",
         "projectName": "SandboxHelpers",
-        "projectPath": "C:\\Projects\\Efficiency\\SandboxHelpers\\SandboxHelpers.csproj",
-        "packagesPath": "C:\\Users\\Alistair\\.nuget\\packages\\",
-        "outputPath": "C:\\Projects\\Efficiency\\SandboxHelpers\\obj\\",
+        "projectPath": "D:\\TechWolf\\Projects\\Efficiency\\SandboxHelpers\\SandboxHelpers.csproj",
+        "packagesPath": "C:\\Users\\Spragg\\.nuget\\packages\\",
+        "outputPath": "D:\\TechWolf\\Projects\\Efficiency\\SandboxHelpers\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
           "C:\\Microsoft\\Xamarin\\NuGet\\",
           "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Alistair\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\Spragg\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\DevExpress 19.1.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Xamarin.Offline.config"
         ],
@@ -26,6 +27,7 @@
           "netcoreapp3.1"
         ],
         "sources": {
+          "C:\\Program Files (x86)\\DevExpress 19.1\\Components\\System\\Components\\Packages": {},
           "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },

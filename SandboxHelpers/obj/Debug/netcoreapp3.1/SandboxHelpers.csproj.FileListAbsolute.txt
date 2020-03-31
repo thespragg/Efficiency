@@ -1,0 +1,7 @@
+C:\Projects\Efficiency\SandboxHelpers\bin\Debug\netcoreapp3.1\SandboxHelpers.deps.json
+C:\Projects\Efficiency\SandboxHelpers\bin\Debug\netcoreapp3.1\SandboxHelpers.dll
+C:\Projects\Efficiency\SandboxHelpers\bin\Debug\netcoreapp3.1\SandboxHelpers.pdb
+C:\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.AssemblyInfoInputs.cache
+C:\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.AssemblyInfo.cs
+C:\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.dll
+C:\Projects\Efficiency\SandboxHelpers\obj\Debug\netcoreapp3.1\SandboxHelpers.pdb

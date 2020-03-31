@@ -1,6 +1,10 @@
 <template>
   <div class="container">
     <div class="upper-section">
+      <div class="info">
+        <img class="tip-img" src="@/assets/tip.png"/>
+        <p>Tip: Use Output.WriteLine(string text) to print messages to the console!</p>
+      </div>
       <codemirror class="editor" v-model="code" :options="cmOptions"></codemirror>
       <div class="options">
         <input class="text-input" type="text" placeholder="Times to run" />
@@ -30,7 +34,7 @@ export default {
   data() {
     return {
       code:
-        "using System;\n\nnamespace CodeEnv{\n\tpublic class Test{\n\t\tpublic void Run(){\n\t\t//Write your code here\n\t\t}\n\t}\n}",
+        "using System;\n\nnamespace CodeEnv{\n\t//Don't change the class name\n\tpublic class SandBox{\n\t\tpublic void Run(){\n\t\t//Write your code here\n\t\t}\n\t}\n}",
       cmOptions: {
         tabSize: 4,
         mode: "text/x-csharp",
@@ -55,10 +59,11 @@ export default {
         let data = res.data;
         if (data.errors) {
           for (let i = 0; i < data.errors.length; i++) {
-            let closing = data.errors[i].indexOf(")") + 1
-            let lineStart = data.errors[i].indexOf(',')+1
-            let sub = data.errors[i].substring(lineStart, closing-1);
-            data.errors[i] = this.getLine(sub) + data.errors[i].substring(closing)
+            let closing = data.errors[i].indexOf(")") + 1;
+            let lineStart = data.errors[i].indexOf(",") + 1;
+            let sub = data.errors[i].substring(lineStart, closing - 1);
+            data.errors[i] =
+              this.getLine(sub) + data.errors[i].substring(closing);
           }
         }
         this.errors = data.errors;
@@ -66,12 +71,14 @@ export default {
       });
     },
     getLine(index) {
-      let codeLines = this.code.replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, "").split("\n");
+      let codeLines = this.code
+        .replace(/\/\*[\s\S]*?\*\/|\/\/.*/g, "")
+        .split("\n");
       var tot = 0;
       for (let i = 0; i < codeLines.length; i++) {
         tot += codeLines[i].length;
         if (tot >= index) {
-          return "(1, "+(i + 1) + ")";
+          return "(1, " + (i + 1) + ")";
         }
       }
     }
@@ -89,12 +96,31 @@ export default {
   text-align: left;
 }
 
+.tip-img{
+height:32px;
+margin-left: 20px;
+}
+
 .upper-section {
   background-color: #0099ff;
   height: auto;
   padding: 50px 5px;
 }
 
+.info{
+  background-color: #016FB9;
+  color: white;
+  border-radius: 16px;
+  width: 70%;
+  margin: 10px auto;
+  display:flex;
+  align-items: center;
+}
+
+.info p{
+  padding:20px;
+  margin:0;
+}
 .editor {
   width: 70%;
   margin: 0 auto;

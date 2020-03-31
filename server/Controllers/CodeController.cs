@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Reflection;
-using System.Runtime.Loader;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
+using Microsoft.CodeAnalysis.CSharp.Syntax;
 using Microsoft.CodeAnalysis.Emit;
-using Microsoft.CSharp;
+using SandboxHelpers;
 using server.Helpers;
 using server.Models;
 
@@ -22,7 +22,14 @@ namespace server.Controllers
         public CompilerResponse Post(UserCode userCode)
         {
             userCode.Code = userCode.Code.Substring(1, userCode.Code.Length - 2);
+            userCode.Code = "using SandboxHelpers;" + userCode.Code;
+            AppendHelpers(userCode.Code);
             return Compile(userCode.Code);
+        }
+
+        public static void AppendHelpers(string code) {
+            var index = code.IndexOf("{",code.IndexOf("SandBox")) + 1;
+
         }
 
         public static CompilerResponse Compile(string code)
@@ -31,8 +38,9 @@ namespace server.Controllers
 
             SyntaxTree syntaxTree = CSharpSyntaxTree.ParseText(code);
             var refPaths = new[] {
-                typeof(System.Object).GetTypeInfo().Assembly.Location,
+                typeof(Object).GetTypeInfo().Assembly.Location,
                 typeof(Console).GetTypeInfo().Assembly.Location,
+                Path.Combine(Path.GetDirectoryName(typeof(Output).GetTypeInfo().Assembly.Location), "SandboxHelpers.dll"),
                 Path.Combine(Path.GetDirectoryName(typeof(System.Runtime.GCSettings).GetTypeInfo().Assembly.Location), "System.Runtime.dll")
             };
             MetadataReference[] references = refPaths.Select(r => MetadataReference.CreateFromFile(r)).ToArray();

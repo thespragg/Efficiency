@@ -24,5 +24,9 @@
     <Folder Include="StaticHelpers\" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\SandboxHelpers\SandboxHelpers.csproj" />
+  </ItemGroup>
+
 
 </Project>

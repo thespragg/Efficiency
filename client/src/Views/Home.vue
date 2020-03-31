@@ -6,12 +6,15 @@
         <p>Tip: Use Output.WriteLine(string text) to print messages to the console!</p>
       </div>
       <codemirror class="editor" v-model="code" :options="cmOptions"></codemirror>
+      <div class="console" v-if="hasLogToDisplay">
+        <h4>Console Output</h4>
+        <div class="break"></div>
+        <div v-for="log in logs" :key="log" class="log">{{log}}</div>
+        <div v-for="error in errors" :key="error" class="error">{{error}}</div>
+      </div>
       <div class="options">
         <input class="text-input" type="text" placeholder="Times to run" />
         <button @click="runCode" class="btn">Run!</button>
-      </div>
-      <div class="errors" v-if="errors && errors.length > 0">
-        <div v-for="error in errors" :key="error" class="error">{{error}}</div>
       </div>
     </div>
     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1440 320">
@@ -42,7 +45,8 @@ export default {
         lineNumbers: true,
         line: true
       },
-      errors: []
+      errors: [],
+      logs: []
     };
   },
   components: {
@@ -67,6 +71,7 @@ export default {
           }
         }
         this.errors = data.errors;
+        this.logs = data.consoleLogs;
         console.log(res);
       });
     },
@@ -84,8 +89,14 @@ export default {
     }
   },
   computed: {
-    codemirror() {
-      return this.$refs.cmEditor.codemirror;
+     hasLogToDisplay(){
+      if(this.errors && this.errors.length > 0){
+        return true;
+      }
+      if(this.logs && this.logs.length > 0){
+        return true;
+      }
+      return false;
     }
   }
 };
@@ -133,15 +144,38 @@ margin-left: 20px;
   justify-content: space-between;
 }
 
-.errors {
-  background-color: #2e3440;
-  width: 68%;
-  margin: 0 auto;
-  padding: 10px;
-}
 .error {
   color: #bf616a;
-  margin: 3px;
+  padding: 5px;
+}
+
+.console {
+  background-color: #2e3440;
+  width: 70%;
+  margin: 10px auto;
+  box-sizing: border-box;
+  padding: 10px;
+  font-size: 13px;
+  font-family: "monospace", sans-serif;
+  border-radius: 16px;
+}
+
+.log {
+  color: #8FBCBB;
+  padding:5px;
+}
+
+.console h4{
+  padding: 5px;
+  margin: 0;
+  color: #E5E9F0;
+  font-weight: 300;
+}
+
+.break{
+  width: 100%;
+  border-bottom: solid 1px #D8DEE9;
+  margin-bottom: 10px;
 }
 
 .btn {
@@ -153,6 +187,10 @@ margin-left: 20px;
   text-align: center;
   color: #fff;
   font-weight: bold;
+}
+
+.btn:hover{
+  background-color: #033557;
 }
 
 .text-input {

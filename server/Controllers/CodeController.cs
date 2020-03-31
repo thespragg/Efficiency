@@ -1,8 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Reflection;
+using System.Text;
+using System.Text.RegularExpressions;
+using System.Web;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.CodeAnalysis;
 using Microsoft.CodeAnalysis.CSharp;
@@ -21,15 +25,21 @@ namespace server.Controllers
         [HttpPost]
         public CompilerResponse Post(UserCode userCode)
         {
-            userCode.Code = userCode.Code.Substring(1, userCode.Code.Length - 2);
-            userCode.Code = "using SandboxHelpers;" + userCode.Code;
-            AppendHelpers(userCode.Code);
-            return Compile(userCode.Code);
+            var code = AppendHelpers(new StringBuilder(userCode.Code));
+            return Compile(code);
         }
 
-        public static void AppendHelpers(string code) {
-            var index = code.IndexOf("{",code.IndexOf("SandBox")) + 1;
+        public string AppendHelpers(StringBuilder code) {
+            code.Remove(0, 1);
+            code.Remove(code.Length - 1, 1);
+            code.Insert(0, "using SandboxHelpers;");
+            code.Replace("\\\"", @"""");
+            var indexOfClass = code.ToString().IndexOf("SandBox") + 1;
+            var insertionIndex = code.ToString().IndexOf("{", indexOfClass) + 1;
+            code.Insert(insertionIndex, "public OutputHandler Output {get;set;} public SandBox(){Output = new OutputHandler();}");
 
+            return code.ToString();
+           // var index = code.IndexOf("{",;
         }
 
         public static CompilerResponse Compile(string code)
@@ -40,7 +50,7 @@ namespace server.Controllers
             var refPaths = new[] {
                 typeof(Object).GetTypeInfo().Assembly.Location,
                 typeof(Console).GetTypeInfo().Assembly.Location,
-                Path.Combine(Path.GetDirectoryName(typeof(Output).GetTypeInfo().Assembly.Location), "SandboxHelpers.dll"),
+                Path.Combine(Path.GetDirectoryName(typeof(OutputHandler).GetTypeInfo().Assembly.Location), "SandboxHelpers.dll"),
                 Path.Combine(Path.GetDirectoryName(typeof(System.Runtime.GCSettings).GetTypeInfo().Assembly.Location), "System.Runtime.dll")
             };
             MetadataReference[] references = refPaths.Select(r => MetadataReference.CreateFromFile(r)).ToArray();
@@ -73,15 +83,20 @@ namespace server.Controllers
 
                     var loader = new CustomAssemblyLoadContext();
                     Assembly assembly = loader.LoadFromStream(ms);
-                    var type = assembly.GetType("CodeEnv.Test");
-                    var instance = assembly.CreateInstance("CodeEnv.Test");
+                    var type = assembly.GetType("CodeEnv.SandBox");
+                    var instance = assembly.CreateInstance("CodeEnv.SandBox");
+                    var prop = type.GetProperty("Output");
                     var meth = type.GetMember("Run").First() as MethodInfo;
                     meth.Invoke(instance, null);
+
+                    var outputs = prop.GetValue(instance, null);
+
                     assembly = null;
                     loader.Unload();
                     return new CompilerResponse()
                     {
-                        Status = "Success"
+                        Status = "Success",
+                        ConsoleLogs = (outputs as OutputHandler).GetLines()
                     };
                 }
             }
